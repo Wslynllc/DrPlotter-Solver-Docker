@@ -6,13 +6,17 @@ Read README.md and the Dockerfile before changing anything. The repository is th
 - Shared standards win: `Wslynllc/project-standards` (`README.md`, `Owner approval.md`, `Delivery gates.md`,
   and `Native-first infrastructure.md` for how solver nodes reach the tailnet). This file only adds this
   repository's values.
-- Merging changes what later deploys, and only by hand. No workflow, Makefile or flag exists (`.github/` holds
-  only CODEOWNERS), so nothing builds, publishes or deploys on merge. The published image
-  `rmkr/drsolver_node:latest` (README.md) is built and pushed manually; a merged Dockerfile change reaches
-  rented hosts only after someone rebuilds and pushes it.
-- Owner tap (`rkroelin-yes`) is required only for `/.github/` (see `.github/CODEOWNERS`; no default owner).
-  Everything else, including this file, merges after an independent agent review. Do not add or change
-  CODEOWNERS here: it is a permission change.
+- Merging changes what later deploys. No workflow, Makefile or flag exists (`.github/` holds only CODEOWNERS), so
+  nothing in this repository builds, publishes or deploys on merge. README.md names the published image
+  `rmkr/drsolver_node:latest`; its publishing route is unknown — no workflow here builds or publishes it, and
+  whether an external job does is unestablished. A merged Dockerfile change reaches rented hosts only after that
+  route rebuilds and pushes the image.
+- The owner's tap is `rkroelin-yes`; when it is needed is [Owner approval's rule](https://github.com/Wslynllc/project-standards/blob/main/Owner%20approval.md#the-rule),
+  not restated here. `.github/CODEOWNERS` is GitHub's routing map: it asks `rkroelin-yes` for a review by itself only
+  on `/.github/`; GitHub asks for none elsewhere, including this file, by itself. A path the map leaves out is not
+  exempt: a production release or a tailnet access change still follows the rule whatever file it lives in. Classify
+  the change, not the path; when the rule names it, request `rkroelin-yes` yourself and say so in the PR. Do not add
+  or change CODEOWNERS here: it is a permission change.
 - No offline check exists: no Makefile, test script or CI. Do not invent one or report a build as passing
   unless you ran it. `docker build` needs the network (base image, Tailscale installer), so it is not offline.
 - Before a push, `git diff --check` and `trufflehog git file://$PWD --no-update --no-verification` must find
